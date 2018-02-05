@@ -1,0 +1,22 @@
+.square {
+  height: 10%;
+  width: 10%;
+  border: 1px solid #222;
+  box-sizing: border-box;
+}
+
+.square-empty {
+  background-color: #FFF;
+}
+
+.square-missed {
+  background-color: #DDD;
+}
+
+.square-active {
+  background-color: #222;
+}
+
+.square-damaged {
+  background-color: crimson;
+}

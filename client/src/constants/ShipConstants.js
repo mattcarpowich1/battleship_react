@@ -1,0 +1,20 @@
+export const ORIENTATIONS = ['VERTICAL', 'HORIZONTAL']
+export const [
+  PATROL_BOAT,
+  SUBMARINE,
+  AIRCRAFT_CARRIER
+] = [
+  'PATROL_BOAT',
+  'SUBMARINE',
+  'AIRCRAFT_CARRIER'
+]
+export const SHIP_TYPES = [
+  PATROL_BOAT,
+  SUBMARINE,
+  AIRCRAFT_CARRIER
+]
+export const SHIP_SIZES = {
+  [PATROL_BOAT]: 2,
+  [SUBMARINE]: 3,
+  [AIRCRAFT_CARRIER]: 5
+}
