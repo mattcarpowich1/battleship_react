@@ -1,23 +1,15 @@
 import React, { Component } from 'react'
-import * as Constants from '../../constants'
-import './Game.css'
+import * as Constants from '../constants'
 
 class Game extends Component {
   constructor () {
     super()
     this.state = {
-      currentPlayer: null,
-      gameState: null,
+      currentPlayer: PLAYER_ONE,
+      gameState: SHIP_PLACEMENT,
       playerOneGrid: [],
       playerTwoGrid: []
     }
-  }
-
-  componentWillMount () {
-    this.setState({
-      currentPlayer: PLAYER_ONE,
-      gameState: SHIP_PLACEMENT
-    })
   }
 
   render () {

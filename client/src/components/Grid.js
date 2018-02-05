@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import Square from '../Square'
+import Square from './Square.js'
 import { generateNewGrid } from '../../utils'
-import './Grid.css'
 
 class Grid extends Component {
   constructor () {

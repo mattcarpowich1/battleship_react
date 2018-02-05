@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import Main from './components/Main'
-import Game from './components/Game'
-import StartScreen from './components/StartScreen'
-import './App.css'
+import Main from './components/Main.js'
+import Game from './components/Game.js'
+import StartScreen from './components/StartScreen.js'
 
 class App extends Component {
   constructor () {

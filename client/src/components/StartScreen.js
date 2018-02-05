@@ -1,5 +1,4 @@
 import React from 'react'
-import './StartScreen.css'
 
 const StartScreen = ({handler}) => {
   return (
