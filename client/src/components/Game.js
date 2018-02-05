@@ -16,7 +16,7 @@ class Game extends Component {
     const emptyGrid = generateNewGrid(DEFAULT_GRID_SIZE)
     this.setState({
       grids: [
-        emptyGrid, 
+        emptyGrid,
         emptyGrid
       ]
     })

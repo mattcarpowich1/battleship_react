@@ -24,8 +24,8 @@ class App extends Component {
     return (
       <Main>
         {
-          gameStarted 
-          ? <Game /> 
+          gameStarted
+          ? <Game />
           : <StartScreen handler={this.startGame} />
         }
       </Main>

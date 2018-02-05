@@ -1,5 +1,4 @@
 import React from 'react'
-import { START_SCREEN } from '../constants'
 
 const StartScreen = ({handler}) => {
   return (

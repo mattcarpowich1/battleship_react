@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Square from './Square.js'
 
 class Grid extends Component {
-
   render () {
     return (
       <div className='grid'>
