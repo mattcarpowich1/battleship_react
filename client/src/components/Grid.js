@@ -1,33 +1,21 @@
 import React, { Component } from 'react'
 import Square from './Square.js'
-import { generateNewGrid } from '../../utils'
 
 class Grid extends Component {
-  constructor () {
-    super()
-    this.state = {
-      coordinates: []
-    }
-  }
-
-  componentWillMount () {
-    const { size } = this.props
-    this.setState({
-      coordinates: generateNewGrid(size)
-    })
-  }
 
   render () {
     return (
       <div className='grid'>
         {
-          this.state.coordinates
-            .map((row, yVal) => {
+          this.props.coordinates
+            .map((row, y) => {
               return row
-                .map((status, xVal) => {
+                .map((status, x) => {
                   return (
-                    <Square status={status}
-                      key={`${xVal},${yVal}`} />
+                    <Square key={`${x},${y}`}
+                      status={status}
+                      locationX={x}
+                      locationY={y} />
                   )
                 })
             })
