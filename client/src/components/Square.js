@@ -1,8 +1,21 @@
 import React from 'react'
 
-const Square = ({status}) => {
+const Square = ({
+  locationX,
+  locationY,
+  status, 
+  selected,
+  toggle,
+  open,
+  handler
+}) => {
   return (
-    <div className={`square square-${status}`} />
+    <div 
+      className={
+        `square square-${status} 
+        ${selected ? 'selected' : ''}`
+      }
+      onClick={() => handler ? handler(locationX, locationY) : false} />
   )
 }
 

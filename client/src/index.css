@@ -15,8 +15,9 @@ h1 {
 }
 
 p {
-  font-size: 24px;
+  font-size: 20px;
   color: crimson;
+  font-weight: 300;
 }
 
 .main {
@@ -41,21 +42,46 @@ p {
 }
 
 .grid {
+  position: relative;
   margin: 0 auto;
-  height: 600px;
-  width: 600px;
+  height: 480px;
+  width: 480px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
-  border: 1px solid #222;
+  border: 1px solid #999;
+}
+
+.fleet {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.ship {
+  position: absolute;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.ship:hover {
+  cursor: pointer;
+}
+
+.ship-horizontal {
+  flex-direction: row;
+}
+
+.ship-veritcal {
+  flex-direction: column;
 }
 
 .square {
-  height: 10%;
-  width: 10%;
-  border: 1px solid #222;
+  height: 48px;
+  width: 48px;
+  border: 1px solid #999;
   box-sizing: border-box;
 }
 
@@ -75,15 +101,32 @@ p {
   background-color: crimson;
 }
 
+.square-is-ship {
+  background-color: #DDD;
+}
+
+.selected {
+  background-color: mediumaquamarine;
+}
+
+.move:hover {
+  background-color: #DDD;
+  cursor: pointer;
+}
+
 .btn {
   padding: 16px 24px;
-  font-size: 20px;
-  color: #222;
-  border: 2px solid #DDD;
+  font-size: 24px;
+  color: #999;
+  border: 2px solid #999;
   background-color: #FFF;
 }
 
 .btn:hover {
   background-color: #EEE;
   cursor: pointer;
+}
+
+.btn:active {
+  outline: 0;
 }

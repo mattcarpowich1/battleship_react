@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import Grid from './Grid.js'
-import { generateNewGrid } from '../utils'
+// import Grid from './Grid.js'
+// import Ship from './Ship.js'
+// import Header from './Header.js'
 import * as Constants from '../constants'
 
 class Game extends Component {
@@ -12,26 +13,22 @@ class Game extends Component {
     }
   }
 
-  componentWillMount () {
-    const emptyGrid = generateNewGrid(DEFAULT_GRID_SIZE)
-    this.setState({
-      grids: [
-        emptyGrid,
-        emptyGrid
-      ]
-    })
-  }
-
   render () {
-    const { currentPlayer, grids } = this.state
+    const { 
+      currentPlayer,
+      grids
+    } = this.state
+
     return (
       <div className='game'>
-        <Grid coordinates={grids[currentPlayer]} />
+        <h1>The Game!</h1>
       </div>
     )
   }
 }
 
-const { PLAYER_ONE, DEFAULT_GRID_SIZE } = Constants
+const { 
+  PLAYER_ONE
+} = Constants
 
 export default Game

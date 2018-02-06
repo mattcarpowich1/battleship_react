@@ -1,12 +1,13 @@
 import React from 'react'
+import Header from './Header.js'
 
 const StartScreen = ({handler}) => {
+  const subtitle = 'Built by Matt Carpowich'
   return (
     <div className='start-screen'>
-      <header>
-        <h1>REACT BATTLESHIP</h1>
-        <p>Built by Matt Carpowich</p>
-      </header>
+      <Header subtitle={subtitle}>
+        REACT BATTLESHIP
+      </Header>
       <button className='btn'
         onClick={handler}>
         START
