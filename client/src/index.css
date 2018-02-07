@@ -14,7 +14,19 @@ h1 {
   margin-bottom: 8px;
 }
 
+h2 {
+  position: absolute;
+  top: 24px;
+  left: calc(50% - 300px);
+  width: 600px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 24px;
+  color: #222;
+}
+
 p {
+  height: 20px;
   font-size: 20px;
   color: crimson;
   font-weight: 300;
@@ -29,8 +41,7 @@ p {
   justify-content: center;
   align-items: center;
 }
-
-.game, 
+ 
 .ship-select,
 .start-screen {
   margin: 0 auto;
@@ -39,6 +50,16 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
+}
+
+.game {
+  margin: 0 auto;
+  margin-top: -24px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -95,15 +116,15 @@ p {
   background-color: #FFF;
 }
 
-.square-missed {
-  background-color: #DDD;
+.square-miss {
+  background-color: #EEE;
 }
 
 .square-active {
   background-color: #222;
 }
 
-.square-damaged {
+.square-hit {
   background-color: crimson;
 }
 

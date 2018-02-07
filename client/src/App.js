@@ -10,6 +10,7 @@ class App extends Component {
   constructor () {
     super()
     this.state = {
+      startClicked: false,
       shipSelect: false,
       gameStarted: false,
       currentPlayer: PLAYER_ONE,
@@ -31,6 +32,7 @@ class App extends Component {
 
   startShipSelect () {
     this.setState({
+      startClicked: true,
       shipSelect: true
     })
   }
@@ -52,6 +54,7 @@ class App extends Component {
 
   render () {
     const { 
+      startClicked,
       currentPlayer, 
       shipSelect, 
       gameStarted,
@@ -70,8 +73,8 @@ class App extends Component {
           player={currentPlayer}
           handler={this.setGrid} />
       )
-    } else if (gameStarted) {
-      content = <Game />
+    } else if (startClicked) {
+      content = <Game grids={[p1Grid, p2Grid]}/>
     } else {
       content = <StartScreen handler={this.startShipSelect} />
     }

@@ -11,16 +11,30 @@ const Square = ({
   handleSelect,
   isAvailable,
   canPlaceShip,
-  handlePlacement
+  handlePlacement,
+  isGame,
+  isUnderFire,
+  attackHandler
 }) => {
   return (
     <div 
       className={
-        `square ${value >= 0 ? 'square-is-ship' : ''}
+        `square ${value >= 0 && !isGame ? 'square-is-ship' : ''}
+        ${isGame && typeof(value) !== 'number' ? 'square-'.concat(value) : ''}
         ${isSelected ? 'selected' : ''}
         ${isAvailable && canPlaceShip ? 'square-is-available' : ''}`
       }
-      onClick={() => { 
+      onClick={() => {
+        if (isUnderFire) {
+          return attackHandler(locationX, locationY, value)
+        }
+        if (!isSelected
+          && selectedShip !== 0
+          && selectedShip !== 1
+          && !selectedCoordinates
+          && !nearestLocation) {
+          return false
+        } 
         if (selectedShip < 0) {
           return value >= 0
           ? handleSelect(nearestLocation[0], nearestLocation[1], value) : false

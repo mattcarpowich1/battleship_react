@@ -16,6 +16,7 @@
     "fix": "standard --fix"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "standard": "^10.0.3"
   }
 }

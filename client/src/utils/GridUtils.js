@@ -27,43 +27,68 @@ const generateNewGrid = size => {
   return grid
 }
 
-const updateGrid = (
+const updateSelection = (
   grid,
   x, 
   y,   
   slotSize,
   selectedShip,
-  selectedCoordinates
+  selectedCoordinates,
+  orientation
 ) => {
-  const updatedGrid = grid
+  let updatedGrid
+  if (orientation === HORIZONTAL) {
+    updatedGrid = grid
+      .map((row, gridY) => {
+        return row.map((value, gridX) => {
+          //check if any coordinates are the same as before
+          if (gridY === y
+            && gridX >= x
+            && gridX < x + slotSize
+            && gridX >= selectedCoordinates[0]) {
+            return selectedShip
+          }
+          //old location
+          if (selectedCoordinates[1] === gridY
+            && gridX >= selectedCoordinates[0]
+            && gridX < selectedCoordinates[0] + slotSize) {
+            return -1
+          // new location
+          } else if (gridY === y 
+            && gridX >= x
+            && gridX < x + slotSize) {
+            return selectedShip
+          } else {
+            return value
+          }
+        })
+      })
+    }
+  return updatedGrid
+}
+
+const updateGameGrid = (grid, x, y, val) => {
+  return grid
     .map((row, gridY) => {
-      return row.map((value, gridX) => {
-        //check if any coordinates are the same as before
-        if (gridY === y
-          && gridX >= x
-          && gridX < x + slotSize
-          && gridX >= selectedCoordinates[0]) {
-          return selectedShip
-        }
-        //old location
-        if (selectedCoordinates[1] === gridY
-          && gridX >= selectedCoordinates[0]
-          && gridX < selectedCoordinates[0] + slotSize) {
-          return -1
-        // new location
-        } else if (gridY === y 
-          && gridX >= x
-          && gridX < x + slotSize) {
-          return selectedShip
-        } else {
-          return value
-        }
+      return row.map((status, gridX) => {
+        return gridY === y && gridX === x
+          ? val
+          : status
       })
     })
-  return updatedGrid
+}
+
+const checkRemaining = (ship, grid) => {
+  return grid
+    .reduce((acc, row) => {
+      if (acc) return acc
+      return row.includes(ship) ? true : false 
+    }, false)
 }
 
 export {
   generateNewGrid,
-  updateGrid
+  updateSelection,
+  updateGameGrid,
+  checkRemaining
 }

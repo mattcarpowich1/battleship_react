@@ -12,9 +12,12 @@ class Grid extends Component {
       selectedCoordinates,
       availableCoordinates,
       handleSelect,
-      handlePlacement
+      handlePlacement,
+      isUnderAttack,
+      attackHandler,
+      isGame
     } = this.props
-
+    
     return (
       <div className='grid'>
         <div className='fleet'>
@@ -30,17 +33,27 @@ class Grid extends Component {
                       value={val}
                       locationX={x}
                       locationY={y}
-                      isSelected={
-                        selectedShip >= 0 
-                        && selectedShip === val
+                      isSelected={selectedShip >= 0 && selectedShip === val}
+                      isAvailable={availableCoordinates 
+                        ? availableCoordinates[y * 5 + x]
+                        : null
                       }
-                      isAvailable={availableCoordinates[y * 5 + x]}
                       selectedShip={selectedShip}
                       selectedCoordinates={selectedCoordinates}
-                      nearestLocation={shipLocations[val]}
+                      nearestLocation={shipLocations 
+                        ? shipLocations[val]
+                        : null
+                      }
                       handleSelect={handleSelect}
-                      canPlaceShip={selectedShip >= 0}
-                      handlePlacement={handlePlacement} />
+                      canPlaceShip={
+                        selectedShip >= 0
+                        ? true
+                        : false
+                      }
+                      handlePlacement={handlePlacement}
+                      isGame={isGame}
+                      isUnderFire={isUnderAttack}
+                      attackHandler={attackHandler} />
                   )
                 })
             })

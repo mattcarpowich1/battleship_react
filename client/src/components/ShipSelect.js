@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import Grid from './Grid.js'
-import Ship from './Ship.js'
 import Header from './Header.js'
 import { 
   getAvailableCoordinates,
-  updateGrid 
+  updateSelection 
 } from '../utils'
 import * as Constants from '../constants'
 
@@ -89,7 +88,7 @@ class ShipSelect extends Component {
     if (!availableCoordinates[y * 5 + x]) {
       return false
     } else {
-      updatedGrid = updateGrid(
+      updatedGrid = updateSelection(
         grid,
         x, 
         y, 
@@ -120,6 +119,7 @@ class ShipSelect extends Component {
       availableCoordinates 
     } = this.state
     const { handler } = this.props
+
     return (
       <div className='ship-select'>
         <Header subtitle={PLACEMENT_HINT}>
