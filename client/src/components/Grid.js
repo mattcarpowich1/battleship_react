@@ -5,12 +5,15 @@ import { EMPTY } from '../constants'
 class Grid extends Component {
   render () {
     const {
-    children,
-    coordinates,
-    available,
-    selectedShip,
-    placementHandler
-  } = this.props
+      children,
+      coordinates,
+      shipLocations,
+      selectedShip,
+      selectedCoordinates,
+      availableCoordinates,
+      handleSelect,
+      handlePlacement
+    } = this.props
 
     return (
       <div className='grid'>
@@ -21,17 +24,23 @@ class Grid extends Component {
           coordinates
             .map((row, y) => {
               return row
-                .map((status, x) => {
-                  const isOpen = available[y * 10 + x]
-                    ? true : false
+                .map((val, x) => {
                   return (
                     <Square key={`${x},${y}`}
-                      status={status}
-                      open={isOpen}
-                      toggle={selectedShip.length > 0}
+                      value={val}
                       locationX={x}
                       locationY={y}
-                      handler={placementHandler} />
+                      isSelected={
+                        selectedShip >= 0 
+                        && selectedShip === val
+                      }
+                      isAvailable={availableCoordinates[y * 5 + x]}
+                      selectedShip={selectedShip}
+                      selectedCoordinates={selectedCoordinates}
+                      nearestLocation={shipLocations[val]}
+                      handleSelect={handleSelect}
+                      canPlaceShip={selectedShip >= 0}
+                      handlePlacement={handlePlacement} />
                   )
                 })
             })

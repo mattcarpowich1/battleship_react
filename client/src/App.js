@@ -18,6 +18,7 @@ class App extends Component {
     }
 
     this.startShipSelect = this.startShipSelect.bind(this)
+    this.setGrid = this.setGrid.bind(this)
   }
 
   componentWillMount () {
@@ -66,7 +67,8 @@ class App extends Component {
             currentPlayer === PLAYER_ONE 
             ? p1Grid : p2Grid
           }
-          player={currentPlayer}/>
+          player={currentPlayer}
+          handler={this.setGrid} />
       )
     } else if (gameStarted) {
       content = <Game />

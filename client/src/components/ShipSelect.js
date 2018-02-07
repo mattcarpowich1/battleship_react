@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import Grid from './Grid.js'
 import Ship from './Ship.js'
 import Header from './Header.js'
-import { getAvailableCoordinates } from '../utils'
+import { 
+  getAvailableCoordinates,
+  updateGrid 
+} from '../utils'
 import * as Constants from '../constants'
 
 class ShipSelect extends Component {
@@ -11,9 +14,8 @@ class ShipSelect extends Component {
     this.state = {
       player: props.player,
       grid: props.grid,
-      selectedShip: '',
+      selectedShip: -1,
       selectedCoordinates: [],
-      numShips: SHIP_TYPES.length,
       shipLocations: SHIP_TYPES.map(type => {
         return DEFAULT_COORDINATES[type]
       }),
@@ -28,20 +30,46 @@ class ShipSelect extends Component {
     this.placeShip = this.placeShip.bind(this)
   }
 
-  toggleShipSelect (type, x, y) {
-    if (this.state.selectedShip === type) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.player > this.props.player) {
       this.setState({
-        selectedShip: '',
-        selectedCoordinates: [x, y]
+        player: nextProps.player,
+        grid: nextProps.grid,
+        shipLocations: SHIP_TYPES.map(type => {
+          return DEFAULT_COORDINATES[type]
+        }),
+        selectedShip: -1,
+        selectedCoordinates: [],
+        availableCoordinates: getAvailableCoordinates(
+          nextProps.grid,
+          SHIP_SIZES[PATROL_BOAT],
+          HORIZONTAL
+        )
+      })
+    }
+  }
+
+  toggleShipSelect (x, y, type) {
+    const { 
+      shipLocations,
+      selectedShip,
+      selectedCoordinates
+    } = this.state
+
+    if (type === selectedShip
+      && x === shipLocations[type][0]
+      && y === shipLocations[type][1]) {
+      this.setState({
+        selectedShip: -1,
+        selectedCoordinates: []
       })
       return false
     }
     const availableCoordinates = getAvailableCoordinates(
       this.state.grid,
-      SHIP_SIZES[type],
+      type,
       HORIZONTAL
     )
-    console.log(availableCoordinates)
     this.setState({
       selectedShip: type,
       selectedCoordinates: [x, y],
@@ -51,63 +79,34 @@ class ShipSelect extends Component {
 
   placeShip (x, y) {
     const { 
+      availableCoordinates, 
       grid,
-      selectedShip, 
       shipLocations,
-      selectedCoordinates,
-      availableCoordinates,
-      numShips } = this.state 
-    if (!selectedShip) return false
-    if (!availableCoordinates[y * 10 + x]) return false
-    const index = SHIP_TYPES.indexOf(selectedShip)
-    const updatedGrid = grid
-      .reduce((acc, row, y2) => {
-        const updatedRow = row.map((status, x2) => {
-          const size = SHIP_SIZES[selectedShip]
-
-          // EMPTY old coordinates
-          if (y2 === selectedCoordinates[1]) {
-            if (x2 >= selectedCoordinates[0]) {
-              if (x2 < selectedCoordinates[0] + size) {
-                return EMPTY
-              }
-            }
-          }
-
-          // PLACE new coordinates
-          if (y === y2 
-            && x2 >= x
-            && x2 < x + size) {
-            return ACTIVE
-          }
-
-          // LEAVE other active coordinates alone
-          if (status === ACTIVE) {
-            if (y2 !== y) {
-              return ACTIVE
-            } else {
-              if (x2 >= x + size 
-                || x2 < x) {
-                return ACTIVE
-              }
-            }
-          }
-
-          // RETURN THE EMPTYS
-          return status
-
-        })
-        return [...acc, updatedRow]
-      }, [])
+      selectedShip,
+      selectedCoordinates } = this.state
+    const slotSize = SHIP_SIZES[selectedShip]
+    let updatedGrid
+    if (!availableCoordinates[y * 5 + x]) {
+      return false
+    } else {
+      updatedGrid = updateGrid(
+        grid,
+        x, 
+        y, 
+        slotSize,
+        selectedShip,
+        selectedCoordinates
+      )
+    }
     this.setState({
-      shipLocations: [
-        ...shipLocations.slice(0, index),
-        [x, y],
-        ...shipLocations.slice(index + 1, numShips)
-      ],
       grid: updatedGrid,
-      selectedShip: '',
-      selectedCoordinates: []
+      selectedShip: -1,
+      selectedCoordinates: [],
+      shipLocations: [
+        ...shipLocations.slice(0, selectedShip),
+        [x, y],
+        ...shipLocations.slice(selectedShip + 1, shipLocations.length)
+      ]
     })
   }
 
@@ -117,30 +116,24 @@ class ShipSelect extends Component {
       grid, 
       selectedShip,
       shipLocations,
+      selectedCoordinates,
       availableCoordinates 
     } = this.state
-    console.log(grid)
+    const { handler } = this.props
     return (
       <div className='ship-select'>
         <Header subtitle={PLACEMENT_HINT}>
           {`Player ${player + 1} place your ships.`}
         </Header>
         <Grid coordinates={grid}
+          shipLocations={shipLocations}
           selectedShip={selectedShip}
-          available={availableCoordinates}
-          placementHandler={this.placeShip}>
-          {
-            SHIP_TYPES.map((type, index) => {
-              return (
-                <Ship key={type}
-                  type={type}
-                  coordinates={shipLocations[index]}
-                  isSelected={selectedShip === type}
-                  selector={this.toggleShipSelect} />
-              )
-            })
-          }
-        </Grid>
+          selectedCoordinates={selectedCoordinates}
+          availableCoordinates={availableCoordinates}
+          handleSelect={this.toggleShipSelect}
+          handlePlacement={this.placeShip} />
+        <button className='btn'
+          onClick={() => handler(player, grid)}>Submit Grid</button>
       </div>
     )
   }
@@ -152,9 +145,7 @@ const {
   SHIP_SIZES,
   DEFAULT_COORDINATES,
   PATROL_BOAT,
-  HORIZONTAL,
-  ACTIVE,
-  EMPTY
+  HORIZONTAL
 } = Constants
 
 export default ShipSelect

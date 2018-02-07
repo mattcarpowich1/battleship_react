@@ -1,45 +1,69 @@
-import * as Constants from '../constants'
+import { 
+  DEFAULT_COORDINATES,
+  DEFAULT_ORIENTATIONS,
+  SHIP_TYPES,
+  SHIP_SIZES,
+  HORIZONTAL
+} from '../constants'
 
 const generateNewGrid = size => {
-
-  const locations = SHIP_TYPES
-    .map(type => DEFAULT_COORDINATES[type])
-
   const grid = []
   for (let y = 0; y < size; y++) {
     let row = []
     for (let x = 0; x < size; x++) {
-      const locationCheck = locations
-        .reduce((acc, location, index) => {
-          if (acc) {
-            return true
-          }
-          return checkValues(x, y, location, SHIP_SIZES[SHIP_TYPES[index]])
-        }, false)
-      row.push(locationCheck ? ACTIVE : EMPTY)
+      let val = -1
+      for (let i = 0; i < DEFAULT_COORDINATES.length; i++) {
+        let [dX, dY] = DEFAULT_COORDINATES[i]
+        if (DEFAULT_ORIENTATIONS[i] === HORIZONTAL) {
+          if (y === dY && x >= dX && x < dX + SHIP_SIZES[i]) {
+            val = SHIP_TYPES[i]
+          } 
+        } 
+      }
+      row.push(val)
     }
     grid.push(row)
   }
   return grid
 }
 
-const checkValues = (x, y, location, size) => {
-  if (y === location[1] 
-    && x >= location[0]
-    && x < location[0] + size) {
-    return true
-  } 
-  return false
+const updateGrid = (
+  grid,
+  x, 
+  y,   
+  slotSize,
+  selectedShip,
+  selectedCoordinates
+) => {
+  const updatedGrid = grid
+    .map((row, gridY) => {
+      return row.map((value, gridX) => {
+        //check if any coordinates are the same as before
+        if (gridY === y
+          && gridX >= x
+          && gridX < x + slotSize
+          && gridX >= selectedCoordinates[0]) {
+          return selectedShip
+        }
+        //old location
+        if (selectedCoordinates[1] === gridY
+          && gridX >= selectedCoordinates[0]
+          && gridX < selectedCoordinates[0] + slotSize) {
+          return -1
+        // new location
+        } else if (gridY === y 
+          && gridX >= x
+          && gridX < x + slotSize) {
+          return selectedShip
+        } else {
+          return value
+        }
+      })
+    })
+  return updatedGrid
 }
 
-const {
-  EMPTY,
-  ACTIVE,
-  SHIP_TYPES,
-  SHIP_SIZES,
-  DEFAULT_COORDINATES
-} = Constants
-
 export {
-  generateNewGrid
+  generateNewGrid,
+  updateGrid
 }

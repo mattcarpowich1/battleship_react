@@ -31,6 +31,7 @@ p {
 }
 
 .game, 
+.ship-select,
 .start-screen {
   margin: 0 auto;
   margin-top: -24px;
@@ -44,8 +45,9 @@ p {
 .grid {
   position: relative;
   margin: 0 auto;
-  height: 480px;
-  width: 480px;
+  margin-bottom: 16px;
+  height: 400px;
+  width: 400px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -79,10 +81,14 @@ p {
 }
 
 .square {
-  height: 48px;
-  width: 48px;
+  height: 80px;
+  width: 80px;
   border: 1px solid #999;
   box-sizing: border-box;
+}
+
+.square-is-available:hover {
+  border: 3px solid black;
 }
 
 .square-empty {
@@ -103,6 +109,10 @@ p {
 
 .square-is-ship {
   background-color: #DDD;
+}
+
+.square-is-ship:hover {
+  cursor: pointer;
 }
 
 .selected {
