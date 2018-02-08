@@ -42,8 +42,6 @@ const Square = ({
         } else {
           if (locationX === selectedCoordinates[0]
             && locationY === selectedCoordinates[1]) {
-            // console.log(selectedCoordinates)
-            // console.log('fuck')
             return handleSelect(locationX, locationY, value)
           } else if (value >= 0
             && value !== selectedShip) {
