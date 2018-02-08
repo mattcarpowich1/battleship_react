@@ -138,7 +138,6 @@ class ShipSelect extends Component {
               if (y === gridY &&
                 gridX >= x &&
                 gridX < x + shipSize) {
-                console.log(x, y)
                 return selectedShip
               } else {
                 return val
@@ -226,9 +225,6 @@ class ShipSelect extends Component {
       availableCoordinates
     } = this.state
     const { handler } = this.props
-    if (player === 1) {
-      console.log(this.state)
-    }
 
     return (
       <div className='ship-select'>
