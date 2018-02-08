@@ -12,7 +12,7 @@ class Game extends Component {
       currentPlayer: PLAYER_ONE,
       grids: props.grids,
       remainingShips: [2, 2],
-      notification: 'Test',
+      notification: '',
       gameOver: false,
       currentResult: ''
     }

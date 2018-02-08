@@ -126,7 +126,7 @@ class ShipSelect extends Component {
       orientation
     )
 
-    const theIndex = (y * 5) + x
+    const theIndex = (y * DEFAULT_GRID_SIZE) + x
     const shipSize = SHIP_SIZES[selectedShip]
 
     let shipReplaced
@@ -188,7 +188,7 @@ class ShipSelect extends Component {
 
     const slotSize = SHIP_SIZES[selectedShip]
     let updatedGrid
-    if (!availableCoordinates[y * 5 + x]) {
+    if (!availableCoordinates[y * DEFAULT_GRID_SIZE + x]) {
       return false
     } else {
       updatedGrid = updateSelection(
@@ -250,6 +250,7 @@ const {
   PLACEMENT_HINT,
   SHIP_TYPES,
   SHIP_SIZES,
+  DEFAULT_GRID_SIZE,
   DEFAULT_COORDINATES,
   DEFAULT_ORIENTATIONS,
   PATROL_BOAT,
