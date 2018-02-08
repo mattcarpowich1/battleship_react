@@ -148,7 +148,8 @@ class Game extends Component {
     const {
       currentPlayer,
       grids,
-      notification
+      notification,
+      gameOver
     } = this.state
 
     const [p1Grid, p2Grid] = grids
@@ -157,7 +158,9 @@ class Game extends Component {
       <div className='game'>
         <GameNotifications message={notification} />
         <div className='player'>
-          <Header subtitle={currentPlayer === PLAYER_ONE ? ATTACK : ' '}>
+          <Header subtitle={currentPlayer === PLAYER_ONE && !gameOver
+            ? ATTACK
+            : ' '}>
               Player 1
             </Header>
           <Grid
@@ -167,7 +170,9 @@ class Game extends Component {
             attackHandler={this.registerAttack} />
         </div>
         <div className='player'>
-          <Header subtitle={currentPlayer === PLAYER_TWO ? ATTACK : ' '}>
+          <Header subtitle={currentPlayer === PLAYER_TWO && !gameOver
+            ? ATTACK
+            : ' '}>
               Player 2
             </Header>
           <Grid coordinates={p2Grid}
