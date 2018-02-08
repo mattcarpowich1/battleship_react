@@ -7,6 +7,7 @@ const Square = ({
   isSelected,
   selectedShip,
   selectedCoordinates,
+  selectedOrientation,
   nearestLocation,
   handleSelect,
   isAvailable,
@@ -41,12 +42,14 @@ const Square = ({
         } else {
           if (locationX === selectedCoordinates[0]
             && locationY === selectedCoordinates[1]) {
+            // console.log(selectedCoordinates)
+            // console.log('fuck')
             return handleSelect(locationX, locationY, value)
           } else if (value >= 0
             && value !== selectedShip) {
             return handleSelect(nearestLocation[0], nearestLocation[1], value)
           } else {
-            return handlePlacement(locationX, locationY)
+            return handlePlacement(locationX, locationY, false)
           }
         }
       }} />

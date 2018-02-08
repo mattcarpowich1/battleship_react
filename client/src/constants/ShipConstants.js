@@ -18,6 +18,6 @@ export const DEFAULT_COORDINATES = [
 ]
 
 export const DEFAULT_ORIENTATIONS = [
-  HORIZONTAL, 
+  VERTICAL, 
   HORIZONTAL
 ]

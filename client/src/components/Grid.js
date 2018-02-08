@@ -10,6 +10,7 @@ class Grid extends Component {
       shipLocations,
       selectedShip,
       selectedCoordinates,
+      selectedOrientation,
       availableCoordinates,
       handleSelect,
       handlePlacement,
@@ -20,9 +21,6 @@ class Grid extends Component {
     
     return (
       <div className='grid'>
-        <div className='fleet'>
-          {children}
-        </div>
         {
           coordinates
             .map((row, y) => {
@@ -40,6 +38,7 @@ class Grid extends Component {
                       }
                       selectedShip={selectedShip}
                       selectedCoordinates={selectedCoordinates}
+                      selectedOrientation={selectedOrientation}
                       nearestLocation={shipLocations 
                         ? shipLocations[val]
                         : null

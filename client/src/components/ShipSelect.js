@@ -3,7 +3,8 @@ import Grid from './Grid.js'
 import Header from './Header.js'
 import { 
   getAvailableCoordinates,
-  updateSelection 
+  updateSelection,
+  checkIfValid 
 } from '../utils'
 import * as Constants from '../constants'
 
@@ -15,13 +16,15 @@ class ShipSelect extends Component {
       grid: props.grid,
       selectedShip: -1,
       selectedCoordinates: [],
+      selectedOrientation: '',
       shipLocations: SHIP_TYPES.map(type => {
         return DEFAULT_COORDINATES[type]
       }),
+      shipOrientations: DEFAULT_ORIENTATIONS,
       availableCoordinates: getAvailableCoordinates(
         props.grid,
         SHIP_SIZES[PATROL_BOAT],
-        HORIZONTAL
+        DEFAULT_ORIENTATIONS[PATROL_BOAT]
       )
     }
 
@@ -42,17 +45,19 @@ class ShipSelect extends Component {
         availableCoordinates: getAvailableCoordinates(
           nextProps.grid,
           SHIP_SIZES[PATROL_BOAT],
-          HORIZONTAL
+          DEFAULT_ORIENTATIONS[PATROL_BOAT]
         )
       })
     }
   }
 
   toggleShipSelect (x, y, type) {
+    console.log(x, y, type)
     const { 
       shipLocations,
       selectedShip,
-      selectedCoordinates
+      selectedCoordinates,
+      shipOrientations
     } = this.state
 
     if (type === selectedShip
@@ -64,10 +69,11 @@ class ShipSelect extends Component {
       })
       return false
     }
+
     const availableCoordinates = getAvailableCoordinates(
       this.state.grid,
       type,
-      HORIZONTAL
+      shipOrientations[type]
     )
     this.setState({
       selectedShip: type,
@@ -76,11 +82,12 @@ class ShipSelect extends Component {
     })
   }
 
-  placeShip (x, y) {
+  placeShip (x, y, rotate) {
     const { 
       availableCoordinates, 
       grid,
       shipLocations,
+      shipOrientations,
       selectedShip,
       selectedCoordinates } = this.state
     const slotSize = SHIP_SIZES[selectedShip]
@@ -88,24 +95,27 @@ class ShipSelect extends Component {
     if (!availableCoordinates[y * 5 + x]) {
       return false
     } else {
+
       updatedGrid = updateSelection(
         grid,
         x, 
         y, 
         slotSize,
         selectedShip,
-        selectedCoordinates
+        selectedCoordinates,
+        shipOrientations[selectedShip],
+        rotate
       )
     }
+
     this.setState({
       grid: updatedGrid,
-      selectedShip: -1,
-      selectedCoordinates: [],
       shipLocations: [
         ...shipLocations.slice(0, selectedShip),
         [x, y],
         ...shipLocations.slice(selectedShip + 1, shipLocations.length)
-      ]
+      ],
+      selectedCoordinates: [x, y]
     })
   }
 
@@ -116,6 +126,7 @@ class ShipSelect extends Component {
       selectedShip,
       shipLocations,
       selectedCoordinates,
+      selectedOrientation,
       availableCoordinates 
     } = this.state
     const { handler } = this.props
@@ -129,6 +140,7 @@ class ShipSelect extends Component {
           shipLocations={shipLocations}
           selectedShip={selectedShip}
           selectedCoordinates={selectedCoordinates}
+          selectedOrientation={selectedOrientation}
           availableCoordinates={availableCoordinates}
           handleSelect={this.toggleShipSelect}
           handlePlacement={this.placeShip} />
@@ -144,8 +156,10 @@ const {
   SHIP_TYPES,
   SHIP_SIZES,
   DEFAULT_COORDINATES,
+  DEFAULT_ORIENTATIONS,
   PATROL_BOAT,
-  HORIZONTAL
+  HORIZONTAL,
+  VERTICAL
 } = Constants
 
 export default ShipSelect
