@@ -34,10 +34,8 @@ class ShipSelect extends Component {
   componentDidMount () {
     document.onkeyup = e => {
       const {
-        grid,
         selectedShip,
         selectedCoordinates,
-        shipLocations,
         shipOrientations
       } = this.state
 
@@ -82,7 +80,6 @@ class ShipSelect extends Component {
     const {
       shipLocations,
       selectedShip,
-      selectedCoordinates,
       shipOrientations
     } = this.state
 

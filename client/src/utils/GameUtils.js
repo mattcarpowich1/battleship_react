@@ -56,7 +56,6 @@ function findVerticalCoords (grid, shipType, shipSize) {
 }
 
 const {
-  SHIP_TYPES,
   SHIP_SIZES,
   ORIENTATIONS,
   HORIZONTAL

@@ -68,7 +68,6 @@ class App extends Component {
       startClicked,
       currentPlayer,
       shipSelect,
-      gameStarted,
       p1Grid,
       p2Grid
     } = this.state

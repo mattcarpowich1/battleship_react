@@ -40,7 +40,6 @@ class Game extends Component {
         notification: ALREADY_TAKEN
       })
     }
-    let result
     let updatedGrid
     let stillFloating
     switch (val) {
@@ -141,7 +140,7 @@ class Game extends Component {
         }
         break
       default:
-        result = null
+        return false
     }
   }
 

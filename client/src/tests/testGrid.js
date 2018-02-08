@@ -9,7 +9,7 @@ import {
   SHIP_SIZES
 } from '../constants'
 
-const testGrid = () => {
+function testGrid () {
   // 4x4 GRID
   // PATROL BOAT
   const emptyGrid = [
