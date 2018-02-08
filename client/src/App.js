@@ -12,7 +12,6 @@ class App extends Component {
     this.state = {
       startClicked: false,
       shipSelect: false,
-      gameStarted: false,
       currentPlayer: PLAYER_ONE,
       p1Grid: [],
       p2Grid: []
@@ -20,6 +19,7 @@ class App extends Component {
 
     this.startShipSelect = this.startShipSelect.bind(this)
     this.setGrid = this.setGrid.bind(this)
+    this.restartGame = this.restartGame.bind(this)
   }
 
   componentWillMount () {
@@ -50,13 +50,24 @@ class App extends Component {
         gameStarted: true
       })
     }
-  } 
+  }
+
+  restartGame () {
+    const initialGrid = generateNewGrid(DEFAULT_GRID_SIZE)
+    this.setState({
+      startClicked: false,
+      shipSelect: false,
+      currentPlayer: PLAYER_ONE,
+      p1Grid: initialGrid.slice(),
+      p2Grid: initialGrid.slice()
+    })
+  }
 
   render () {
-    const { 
+    const {
       startClicked,
-      currentPlayer, 
-      shipSelect, 
+      currentPlayer,
+      shipSelect,
       gameStarted,
       p1Grid,
       p2Grid
@@ -65,16 +76,20 @@ class App extends Component {
     let content
     if (shipSelect) {
       content = (
-        <ShipSelect 
+        <ShipSelect
           grid={
-            currentPlayer === PLAYER_ONE 
+            currentPlayer === PLAYER_ONE
             ? p1Grid : p2Grid
           }
           player={currentPlayer}
           handler={this.setGrid} />
       )
     } else if (startClicked) {
-      content = <Game grids={[p1Grid, p2Grid]}/>
+      content = (
+        <Game
+          grids={[p1Grid, p2Grid]}
+          restart={this.restartGame} />
+      )
     } else {
       content = <StartScreen handler={this.startShipSelect} />
     }
@@ -90,8 +105,7 @@ class App extends Component {
 const {
   PLAYER_ONE,
   PLAYER_TWO,
-  DEFAULT_GRID_SIZE,
-  DEFAULT_COORDINATES
+  DEFAULT_GRID_SIZE
 } = Constants
 
 export default App

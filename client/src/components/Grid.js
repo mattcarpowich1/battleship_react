@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import Square from './Square.js'
-import { EMPTY } from '../constants'
 
 class Grid extends Component {
   render () {
     const {
-      children,
       coordinates,
       shipLocations,
       selectedShip,
@@ -18,7 +16,7 @@ class Grid extends Component {
       attackHandler,
       isGame
     } = this.props
-    
+
     return (
       <div className='grid'>
         {
@@ -32,22 +30,20 @@ class Grid extends Component {
                       locationX={x}
                       locationY={y}
                       isSelected={selectedShip >= 0 && selectedShip === val}
-                      isAvailable={availableCoordinates 
+                      isAvailable={availableCoordinates
                         ? availableCoordinates[y * 5 + x]
                         : null
                       }
                       selectedShip={selectedShip}
                       selectedCoordinates={selectedCoordinates}
                       selectedOrientation={selectedOrientation}
-                      nearestLocation={shipLocations 
+                      nearestLocation={shipLocations
                         ? shipLocations[val]
                         : null
                       }
                       handleSelect={handleSelect}
                       canPlaceShip={
                         selectedShip >= 0
-                        ? true
-                        : false
                       }
                       handlePlacement={handlePlacement}
                       isGame={isGame}

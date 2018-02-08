@@ -8,4 +8,3 @@ export const HIT = 'hit'
 export const ALREADY_TAKEN = 'already taken'
 export const SUNK = 'sunk'
 export const GAME_OVER = 'game over'
-

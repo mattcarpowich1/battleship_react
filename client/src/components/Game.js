@@ -24,8 +24,10 @@ class Game extends Component {
     const {
       currentPlayer,
       grids,
-      remainingShips
+      remainingShips,
+      gameOver
     } = this.state
+    if (gameOver) return false
     const [p1Grid, p2Grid] = grids
     const currentGrid = currentPlayer === PLAYER_ONE
       ? p2Grid
@@ -33,7 +35,7 @@ class Game extends Component {
     const playerUnderAttack = currentPlayer === PLAYER_ONE
       ? PLAYER_TWO
       : PLAYER_ONE
-    if (typeof(val) !== 'number') {
+    if (typeof (val) !== 'number') {
       this.setState({
         notification: ALREADY_TAKEN
       })
@@ -46,10 +48,10 @@ class Game extends Component {
         updatedGrid = updateGameGrid(currentGrid, x, y, MISS)
         this.setState({
           grids: [
-              ...grids.slice(0, playerUnderAttack),
-              updatedGrid,
-              ...grids.slice(playerUnderAttack + 1),
-            ],
+            ...grids.slice(0, playerUnderAttack),
+            updatedGrid,
+            ...grids.slice(playerUnderAttack + 1)
+          ],
           notification: MISS,
           currentPlayer: playerUnderAttack
         })
@@ -63,9 +65,9 @@ class Game extends Component {
               grids: [
                 ...grids.slice(0, playerUnderAttack),
                 updatedGrid,
-                ...grids.slice(playerUnderAttack + 1),
+                ...grids.slice(playerUnderAttack + 1)
               ],
-              notification: GAME_OVER,
+              notification: `${GAME_OVER}! Player ${currentPlayer + 1} wins!`,
               gameOver: true
             })
           } else {
@@ -79,7 +81,7 @@ class Game extends Component {
               grids: [
                 ...grids.slice(0, playerUnderAttack),
                 updatedGrid,
-                ...grids.slice(playerUnderAttack + 1),
+                ...grids.slice(playerUnderAttack + 1)
               ],
               currentPlayer: playerUnderAttack
             })
@@ -90,7 +92,7 @@ class Game extends Component {
             grids: [
               ...grids.slice(0, playerUnderAttack),
               updatedGrid,
-              ...grids.slice(playerUnderAttack + 1),
+              ...grids.slice(playerUnderAttack + 1)
             ],
             currentPlayer: playerUnderAttack
           })
@@ -105,9 +107,9 @@ class Game extends Component {
               grids: [
                 ...grids.slice(0, playerUnderAttack),
                 updatedGrid,
-                ...grids.slice(playerUnderAttack + 1),
+                ...grids.slice(playerUnderAttack + 1)
               ],
-              notification: GAME_OVER,
+              notification: `${GAME_OVER}! Player ${currentPlayer + 1} wins!`,
               gameOver: true
             })
           } else {
@@ -121,7 +123,7 @@ class Game extends Component {
               grids: [
                 ...grids.slice(0, playerUnderAttack),
                 updatedGrid,
-                ...grids.slice(playerUnderAttack + 1),
+                ...grids.slice(playerUnderAttack + 1)
               ],
               currentPlayer: playerUnderAttack
             })
@@ -132,7 +134,7 @@ class Game extends Component {
             grids: [
               ...grids.slice(0, playerUnderAttack),
               updatedGrid,
-              ...grids.slice(playerUnderAttack + 1),
+              ...grids.slice(playerUnderAttack + 1)
             ],
             currentPlayer: playerUnderAttack
           })
@@ -141,39 +143,37 @@ class Game extends Component {
       default:
         result = null
     }
-
   }
 
   render () {
-    const { 
+    const {
       currentPlayer,
       grids,
       notification
     } = this.state
 
     const [p1Grid, p2Grid] = grids
-    console.log(this.state)
 
     return (
       <div className='game'>
-        <GameNotifications message={notification}/>
+        <GameNotifications message={notification} />
         <div className='player'>
           <Header subtitle={currentPlayer === PLAYER_ONE ? ATTACK : ' '}>
-            Player 1
-          </Header>
-          <Grid 
+              Player 1
+            </Header>
+          <Grid
             coordinates={p1Grid}
-            isGame={true}
-            isUnderAttack={currentPlayer===PLAYER_TWO}
+            isGame
+            isUnderAttack={currentPlayer === PLAYER_TWO}
             attackHandler={this.registerAttack} />
         </div>
         <div className='player'>
           <Header subtitle={currentPlayer === PLAYER_TWO ? ATTACK : ' '}>
-            Player 2
-          </Header>
+              Player 2
+            </Header>
           <Grid coordinates={p2Grid}
-            isGame={true}
-            isUnderAttack={currentPlayer===PLAYER_ONE}
+            isGame
+            isUnderAttack={currentPlayer === PLAYER_ONE}
             attackHandler={this.registerAttack} />
         </div>
       </div>
@@ -181,7 +181,7 @@ class Game extends Component {
   }
 }
 
-const { 
+const {
   PLAYER_ONE,
   PLAYER_TWO,
   PATROL_BOAT,
@@ -190,7 +190,6 @@ const {
   HIT,
   MISS,
   ALREADY_TAKEN,
-  SUNK,
   GAME_OVER
 } = Constants
 

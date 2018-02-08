@@ -4,10 +4,10 @@ function getAvailableCoordinates (grid, shipType, orientation) {
   if (!ORIENTATIONS.includes(orientation)) {
     throw new Error(`INVALID ARGUMENT "${orientation}."`)
   }
-  return orientation === HORIZONTAL 
-    ? findHorizontalCoords(grid, shipType, SHIP_SIZES[shipType]) 
+  return orientation === HORIZONTAL
+    ? findHorizontalCoords(grid, shipType, SHIP_SIZES[shipType])
     : findVerticalCoords(grid, shipType, SHIP_SIZES[shipType])
-}   
+}
 
 function findHorizontalCoords (grid, shipType, shipSize) {
   const results = []
@@ -20,9 +20,9 @@ function findHorizontalCoords (grid, shipType, shipSize) {
       let isOpen = true
       let slot = grid[y].slice(x, x + shipSize)
       for (let i = 0; i < slot.length; i++) {
-        if (slot[i] !== shipType
-          && slot[i] >= 0) {
-          isOpen = false 
+        if (slot[i] !== shipType &&
+          slot[i] >= 0) {
+          isOpen = false
         }
       }
       results.push(isOpen)
@@ -33,32 +33,32 @@ function findHorizontalCoords (grid, shipType, shipSize) {
 
 function findVerticalCoords (grid, shipType, shipSize) {
   const results = []
-    for (let y = 0; y < grid.length; y++) {
-      for (let x = 0; x < grid.length; x++) {
-        if (y > grid.length - shipSize) {
-          results.push(false)
-          continue
-        }
-        let isOpen = true
-        let slot = grid
+  for (let y = 0; y < grid.length; y++) {
+    for (let x = 0; x < grid.length; x++) {
+      if (y > grid.length - shipSize) {
+        results.push(false)
+        continue
+      }
+      let isOpen = true
+      let slot = grid
           .slice(y, y + shipSize)
           .map(row => row[x])
-        for (let i = 0; i < slot.length; i++) {
-          if (slot[i] !== shipType
-            && slot[i] >= 0) {
-              isOpen = false 
-            }
-          }
-        results.push(isOpen)
+      for (let i = 0; i < slot.length; i++) {
+        if (slot[i] !== shipType &&
+            slot[i] >= 0) {
+          isOpen = false
+        }
       }
+      results.push(isOpen)
     }
-  return results 
+  }
+  return results
 }
 
 const {
   SHIP_TYPES,
-  SHIP_SIZES, 
-  ORIENTATIONS, 
+  SHIP_SIZES,
+  ORIENTATIONS,
   HORIZONTAL
 } = Constants
 

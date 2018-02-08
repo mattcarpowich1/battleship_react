@@ -1,4 +1,4 @@
-import { 
+import {
   DEFAULT_COORDINATES,
   DEFAULT_ORIENTATIONS,
   SHIP_TYPES,
@@ -17,12 +17,12 @@ const generateNewGrid = size => {
         if (DEFAULT_ORIENTATIONS[i] === HORIZONTAL) {
           if (y === dY && x >= dX && x < dX + SHIP_SIZES[i]) {
             val = SHIP_TYPES[i]
-          } 
+          }
         } else {
           if (x === dX && y >= dY && y < dY + SHIP_SIZES[i]) {
             val = SHIP_TYPES[i]
-          } 
-        } 
+          }
+        }
       }
       row.push(val)
     }
@@ -31,31 +31,10 @@ const generateNewGrid = size => {
   return grid
 }
 
-const checkIfValid = grid => {
-  console.log(grid)
-  const shipValues = SHIP_TYPES.reduce((acc, val, type) => {
-    const shipValue = val * SHIP_SIZES[type]
-    return acc + shipValue
-  }, 0)
-  const shipVolume = SHIP_SIZES.reduce((acc, size) => {
-    return acc + size
-  }, 0)
-  const legalNum = ((Math.pow(grid.length, 2) - shipVolume) * -1) + shipValues
-
-  const total = grid.reduce((acc, row) => {
-    let rowTotal = row.reduce((acc2, val) => {
-      return acc2 + parseInt(val)
-    }, 0)
-    return acc + rowTotal
-  }, 0)
-
-  return total === legalNum
-}
-
 const updateSelection = (
   grid,
-  x, 
-  y,   
+  x,
+  y,
   slotSize,
   selectedShip,
   selectedCoordinates,
@@ -68,106 +47,106 @@ const updateSelection = (
       updatedGrid = grid
         .map((row, gridY) => {
           return row.map((value, gridX) => {
-            //check if any coordinates are the same as before
-            if (gridY === y
-              && gridX >= x
-              && gridX < x + slotSize
-              && gridX >= selectedCoordinates[0]) {
+            // check if any coordinates are the same as before
+            if (gridY === y &&
+              gridX >= x &&
+              gridX < x + slotSize &&
+              gridX >= selectedCoordinates[0]) {
               return selectedShip
             }
-            //old location
-            if (selectedCoordinates[1] === gridY
-              && gridX >= selectedCoordinates[0]
-              && gridX < selectedCoordinates[0] + slotSize) {
+            // old location
+            if (selectedCoordinates[1] === gridY &&
+              gridX >= selectedCoordinates[0] &&
+              gridX < selectedCoordinates[0] + slotSize) {
               return -1
             // new location
-            } else if (gridY === y 
-              && gridX >= x
-              && gridX < x + slotSize) {
+            } else if (gridY === y &&
+              gridX >= x &&
+              gridX < x + slotSize) {
               return selectedShip
             } else {
               return value
             }
           })
         })
-      } else {
-        updatedGrid = grid
+    } else {
+      updatedGrid = grid
           .map((row, gridY) => {
             return row.map((value, gridX) => {
-              //check if any coordinates are the same as before
-              if (gridX === x
-                && gridY >= y
-                && gridY < y + slotSize
-                && gridY >= selectedCoordinates[1]) {
+              // check if any coordinates are the same as before
+              if (gridX === x &&
+                gridY >= y &&
+                gridY < y + slotSize &&
+                gridY >= selectedCoordinates[1]) {
                 return selectedShip
               }
-              //old location
-              if (selectedCoordinates[0] === gridX
-                && gridY >= selectedCoordinates[1]
-                && gridY < selectedCoordinates[1] + slotSize) {
+              // old location
+              if (selectedCoordinates[0] === gridX &&
+                gridY >= selectedCoordinates[1] &&
+                gridY < selectedCoordinates[1] + slotSize) {
                 return -1
               // new location
-              } else if (gridX === x 
-                && gridY >= y
-                && gridY < y + slotSize) {
+              } else if (gridX === x &&
+                gridY >= y &&
+                gridY < y + slotSize) {
                 return selectedShip
               } else {
                 return value
               }
             })
           })
-      }
-    } else { // ROTATIONS
-      if (orientation === HORIZONTAL) {
-        updatedGrid = grid
+    }
+  } else { // ROTATIONS
+    if (orientation === HORIZONTAL) {
+      updatedGrid = grid
           .map((row, gridY) => {
             return row.map((value, gridX) => {
-              //leave ship head alone
-              if (gridY === y
-                && gridX === x) {
+              // leave ship head alone
+              if (gridY === y &&
+                gridX === x) {
                 return selectedShip
               }
-              //old location
-              if (selectedCoordinates[0] === gridX
-                && gridY >= selectedCoordinates[1]
-                && gridY < selectedCoordinates[1] + slotSize) {
+              // old location
+              if (selectedCoordinates[0] === gridX &&
+                gridY >= selectedCoordinates[1] &&
+                gridY < selectedCoordinates[1] + slotSize) {
                 return -1
               // new location
-              } else if (gridY === y 
-                && gridX >= x
-                && gridX < x + slotSize) {
+              } else if (gridY === y &&
+                gridX >= x &&
+                gridX < x + slotSize) {
                 return selectedShip
               } else {
                 return value
               }
             })
           })
-        } else {
-          updatedGrid = grid
+    } else {
+      updatedGrid = grid
             .map((row, gridY) => {
               return row.map((value, gridX) => {
-                //leave ship head alone
-                if (gridY === y
-                  && gridX === x) {
+                // leave ship head alone
+                if (gridY === y &&
+                  gridX === x) {
                   return selectedShip
                 }
-                //old location
-                if (selectedCoordinates[1] === gridY
-                  && gridX >= selectedCoordinates[0]
-                  && gridX < selectedCoordinates[0] + slotSize) {
+                // old location
+                if (selectedCoordinates[1] === gridY &&
+                  gridX >= selectedCoordinates[0] &&
+                  gridX < selectedCoordinates[0] + slotSize) {
                   return -1
                 // new location
-                } else if (gridX === x 
-                  && gridY >= y
-                  && gridY < y + slotSize) {
+                } else if (gridX === x &&
+                  gridY >= y &&
+                  gridY < y + slotSize) {
                   return selectedShip
                 } else {
                   return value
                 }
               })
             })
-        }
     }
+  }
   return updatedGrid
 }
 
@@ -186,7 +165,7 @@ const checkRemaining = (ship, grid) => {
   return grid
     .reduce((acc, row) => {
       if (acc) return acc
-      return row.includes(ship) ? true : false 
+      return !!row.includes(ship)
     }, false)
 }
 
@@ -194,6 +173,5 @@ export {
   generateNewGrid,
   updateSelection,
   updateGameGrid,
-  checkRemaining,
-  checkIfValid
+  checkRemaining
 }

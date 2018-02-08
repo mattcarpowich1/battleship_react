@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import Grid from './Grid.js'
 import Header from './Header.js'
-import { 
+import {
   getAvailableCoordinates,
-  updateSelection,
-  checkIfValid 
+  updateSelection
 } from '../utils'
 import * as Constants from '../constants'
 
@@ -23,7 +22,7 @@ class ShipSelect extends Component {
       shipOrientations: DEFAULT_ORIENTATIONS,
       availableCoordinates: getAvailableCoordinates(
         props.grid,
-        SHIP_SIZES[PATROL_BOAT],
+        PATROL_BOAT,
         DEFAULT_ORIENTATIONS[PATROL_BOAT]
       )
     }
@@ -32,7 +31,30 @@ class ShipSelect extends Component {
     this.placeShip = this.placeShip.bind(this)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidMount () {
+    document.onkeyup = e => {
+      const {
+        grid,
+        selectedShip,
+        selectedCoordinates,
+        shipLocations,
+        shipOrientations
+      } = this.state
+
+      const orientation = shipOrientations[selectedShip] === HORIZONTAL
+        ? VERTICAL
+        : HORIZONTAL
+      const [x, y] = selectedCoordinates
+
+      if (selectedShip >= 0 && e.code === 'Space') {
+        this.rotateShip(x, y, orientation)
+      } else {
+        return false
+      }
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
     if (nextProps.player > this.props.player) {
       this.setState({
         player: nextProps.player,
@@ -40,29 +62,33 @@ class ShipSelect extends Component {
         shipLocations: SHIP_TYPES.map(type => {
           return DEFAULT_COORDINATES[type]
         }),
+        shipOrientations: DEFAULT_ORIENTATIONS,
         selectedShip: -1,
         selectedCoordinates: [],
         availableCoordinates: getAvailableCoordinates(
           nextProps.grid,
-          SHIP_SIZES[PATROL_BOAT],
+          PATROL_BOAT,
           DEFAULT_ORIENTATIONS[PATROL_BOAT]
         )
       })
     }
   }
 
+  componentWillUnmount () {
+    document.onkeyup = null
+  }
+
   toggleShipSelect (x, y, type) {
-    console.log(x, y, type)
-    const { 
+    const {
       shipLocations,
       selectedShip,
       selectedCoordinates,
       shipOrientations
     } = this.state
 
-    if (type === selectedShip
-      && x === shipLocations[type][0]
-      && y === shipLocations[type][1]) {
+    if (type === selectedShip &&
+      x === shipLocations[type][0] &&
+      y === shipLocations[type][1]) {
       this.setState({
         selectedShip: -1,
         selectedCoordinates: []
@@ -82,24 +108,97 @@ class ShipSelect extends Component {
     })
   }
 
+  rotateShip (x, y, orientation) {
+    const {
+      selectedShip,
+      grid,
+      shipOrientations
+    } = this.state
+
+    const shipRemoved = grid.map(row => {
+      return row.map(val => {
+        return val === selectedShip
+          ? -1
+          : val
+      })
+    })
+
+    const available = getAvailableCoordinates(
+      shipRemoved,
+      selectedShip,
+      orientation
+    )
+
+    const theIndex = (y * 5) + x
+    const shipSize = SHIP_SIZES[selectedShip]
+
+    let shipReplaced
+    if (available[theIndex]) {
+      if (orientation === HORIZONTAL) {
+        shipReplaced = shipRemoved
+          .map((row, gridY) => {
+            return row.map((val, gridX) => {
+              if (y === gridY &&
+                gridX >= x &&
+                gridX < x + shipSize) {
+                console.log(x, y)
+                return selectedShip
+              } else {
+                return val
+              }
+            })
+          })
+      } else {
+        shipReplaced = shipRemoved
+          .map((row, gridY) => {
+            return row.map((val, gridX) => {
+              if (x === gridX &&
+                gridY >= y &&
+                gridY < y + shipSize) {
+                return selectedShip
+              } else {
+                return val
+              }
+            })
+          })
+      }
+
+      this.setState({
+        grid: shipReplaced,
+        shipOrientations: [
+          ...shipOrientations.slice(0, selectedShip),
+          orientation,
+          ...shipOrientations.slice(selectedShip + 1)
+        ],
+        availableCoordinates: getAvailableCoordinates(
+          shipReplaced,
+          selectedShip,
+          orientation
+        )
+      })
+    } else {
+      return false
+    }
+  }
+
   placeShip (x, y, rotate) {
-    const { 
-      availableCoordinates, 
+    const {
+      availableCoordinates,
       grid,
       shipLocations,
       shipOrientations,
       selectedShip,
       selectedCoordinates } = this.state
+
     const slotSize = SHIP_SIZES[selectedShip]
     let updatedGrid
     if (!availableCoordinates[y * 5 + x]) {
       return false
     } else {
-
       updatedGrid = updateSelection(
         grid,
-        x, 
-        y, 
+        x,
+        y,
         slotSize,
         selectedShip,
         selectedCoordinates,
@@ -120,16 +219,19 @@ class ShipSelect extends Component {
   }
 
   render () {
-    const { 
-      player, 
-      grid, 
+    const {
+      player,
+      grid,
       selectedShip,
       shipLocations,
       selectedCoordinates,
       selectedOrientation,
-      availableCoordinates 
+      availableCoordinates
     } = this.state
     const { handler } = this.props
+    if (player === 1) {
+      console.log(this.state)
+    }
 
     return (
       <div className='ship-select'>
