@@ -38,8 +38,7 @@ const updateSelection = (
   slotSize,
   selectedShip,
   selectedCoordinates,
-  orientation,
-  rotate
+  orientation
 ) => {
   let updatedGrid
   if (orientation === HORIZONTAL) {

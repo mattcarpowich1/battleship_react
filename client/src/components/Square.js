@@ -47,7 +47,7 @@ const Square = ({
             value !== selectedShip) {
             return handleSelect(nearestLocation[0], nearestLocation[1], value)
           } else {
-            return handlePlacement(locationX, locationY, false)
+            return handlePlacement(locationX, locationY)
           }
         }
       }} />

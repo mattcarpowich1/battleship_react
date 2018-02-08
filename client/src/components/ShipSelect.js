@@ -194,7 +194,6 @@ class ShipSelect extends Component {
         selectedShip,
         selectedCoordinates,
         shipOrientations[selectedShip]
-        // rotate
       )
     }
 
