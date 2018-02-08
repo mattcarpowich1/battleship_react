@@ -12,3 +12,5 @@ open up browser at http://localhost:3000
 
 ### Press Ctrl-C to cancel the process
 
+![ShipSelect](https://raw.githubusercontent.com/mattcarpowich1/battleship_react/master/ShipSelect.png)
+
