@@ -14,3 +14,5 @@ open up browser at http://localhost:3000
 
 ![ShipSelect](https://raw.githubusercontent.com/mattcarpowich1/battleship_react/master/ShipSelect.png)
 
+![Game](https://raw.githubusercontent.com/mattcarpowich1/battleship_react/master/ShipSelect.png)
+
