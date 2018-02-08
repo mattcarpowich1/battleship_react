@@ -111,7 +111,6 @@ class ShipSelect extends Component {
       grid,
       shipOrientations
     } = this.state
-
     const shipRemoved = grid.map(row => {
       return row.map(val => {
         return val === selectedShip
@@ -119,16 +118,13 @@ class ShipSelect extends Component {
           : val
       })
     })
-
     const available = getAvailableCoordinates(
       shipRemoved,
       selectedShip,
       orientation
     )
-
     const theIndex = (y * DEFAULT_GRID_SIZE) + x
     const shipSize = SHIP_SIZES[selectedShip]
-
     let shipReplaced
     if (available[theIndex]) {
       if (orientation === HORIZONTAL) {
@@ -185,7 +181,6 @@ class ShipSelect extends Component {
       shipOrientations,
       selectedShip,
       selectedCoordinates } = this.state
-
     const slotSize = SHIP_SIZES[selectedShip]
     let updatedGrid
     if (!availableCoordinates[y * DEFAULT_GRID_SIZE + x]) {
@@ -198,8 +193,8 @@ class ShipSelect extends Component {
         slotSize,
         selectedShip,
         selectedCoordinates,
-        shipOrientations[selectedShip],
-        rotate
+        shipOrientations[selectedShip]
+        // rotate
       )
     }
 

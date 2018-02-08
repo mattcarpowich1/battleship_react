@@ -151,7 +151,6 @@ class Game extends Component {
       notification,
       gameOver
     } = this.state
-
     const [p1Grid, p2Grid] = grids
 
     return (

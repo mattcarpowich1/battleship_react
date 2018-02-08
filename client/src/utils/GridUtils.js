@@ -42,110 +42,58 @@ const updateSelection = (
   rotate
 ) => {
   let updatedGrid
-  if (!rotate) {
-    if (orientation === HORIZONTAL) {
-      updatedGrid = grid
+  if (orientation === HORIZONTAL) {
+    updatedGrid = grid
+      .map((row, gridY) => {
+        return row.map((value, gridX) => {
+          // check if any coordinates are the same as before
+          if (gridY === y &&
+            gridX >= x &&
+            gridX < x + slotSize &&
+            gridX >= selectedCoordinates[0]) {
+            return selectedShip
+          }
+          // old location
+          if (selectedCoordinates[1] === gridY &&
+            gridX >= selectedCoordinates[0] &&
+            gridX < selectedCoordinates[0] + slotSize) {
+            return -1
+          // new location
+          } else if (gridY === y &&
+            gridX >= x &&
+            gridX < x + slotSize) {
+            return selectedShip
+          } else {
+            return value
+          }
+        })
+      })
+  } else {
+    updatedGrid = grid
         .map((row, gridY) => {
           return row.map((value, gridX) => {
             // check if any coordinates are the same as before
-            if (gridY === y &&
-              gridX >= x &&
-              gridX < x + slotSize &&
-              gridX >= selectedCoordinates[0]) {
+            if (gridX === x &&
+              gridY >= y &&
+              gridY < y + slotSize &&
+              gridY >= selectedCoordinates[1]) {
               return selectedShip
             }
             // old location
-            if (selectedCoordinates[1] === gridY &&
-              gridX >= selectedCoordinates[0] &&
-              gridX < selectedCoordinates[0] + slotSize) {
+            if (selectedCoordinates[0] === gridX &&
+              gridY >= selectedCoordinates[1] &&
+              gridY < selectedCoordinates[1] + slotSize) {
               return -1
             // new location
-            } else if (gridY === y &&
-              gridX >= x &&
-              gridX < x + slotSize) {
+            } else if (gridX === x &&
+              gridY >= y &&
+              gridY < y + slotSize) {
               return selectedShip
             } else {
               return value
             }
           })
         })
-    } else {
-      updatedGrid = grid
-          .map((row, gridY) => {
-            return row.map((value, gridX) => {
-              // check if any coordinates are the same as before
-              if (gridX === x &&
-                gridY >= y &&
-                gridY < y + slotSize &&
-                gridY >= selectedCoordinates[1]) {
-                return selectedShip
-              }
-              // old location
-              if (selectedCoordinates[0] === gridX &&
-                gridY >= selectedCoordinates[1] &&
-                gridY < selectedCoordinates[1] + slotSize) {
-                return -1
-              // new location
-              } else if (gridX === x &&
-                gridY >= y &&
-                gridY < y + slotSize) {
-                return selectedShip
-              } else {
-                return value
-              }
-            })
-          })
-    }
-  } else { // ROTATIONS
-    if (orientation === HORIZONTAL) {
-      updatedGrid = grid
-          .map((row, gridY) => {
-            return row.map((value, gridX) => {
-              // leave ship head alone
-              if (gridY === y &&
-                gridX === x) {
-                return selectedShip
-              }
-              // old location
-              if (selectedCoordinates[0] === gridX &&
-                gridY >= selectedCoordinates[1] &&
-                gridY < selectedCoordinates[1] + slotSize) {
-                return -1
-              // new location
-              } else if (gridY === y &&
-                gridX >= x &&
-                gridX < x + slotSize) {
-                return selectedShip
-              } else {
-                return value
-              }
-            })
-          })
-    } else {
-      updatedGrid = grid
-            .map((row, gridY) => {
-              return row.map((value, gridX) => {
-                // leave ship head alone
-                if (gridY === y &&
-                  gridX === x) {
-                  return selectedShip
-                }
-                // old location
-                if (selectedCoordinates[1] === gridY &&
-                  gridX >= selectedCoordinates[0] &&
-                  gridX < selectedCoordinates[0] + slotSize) {
-                  return -1
-                // new location
-                } else if (gridX === x &&
-                  gridY >= y &&
-                  gridY < y + slotSize) {
-                  return selectedShip
-                } else {
-                  return value
-                }
-              })
-            })
-    }
   }
   return updatedGrid
 }
