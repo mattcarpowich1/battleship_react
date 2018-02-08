@@ -151,13 +151,15 @@ p {
   color: #999;
   border: 2px solid #999;
   background-color: #FFF;
+  outline: none;
 }
 
 .btn:hover {
   background-color: #EEE;
   cursor: pointer;
+  outline: none;
 }
 
-.btn:active {
-  outline: 0;
+.btn:active, btn:focus {
+  outline: none;
 }
