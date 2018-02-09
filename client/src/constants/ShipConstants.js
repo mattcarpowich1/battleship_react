@@ -9,6 +9,10 @@ export const SHIP_TYPES = [
   PATROL_BOAT,
   SUBMARINE
 ]
+export const SHIP_NAMES = [
+  'Patrol Boat',
+  'Submarine'
+]
 export const SHIP_SIZES = [2, 3]
 export const DEFAULT_COORDINATES = [
   [1, 1],

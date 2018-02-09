@@ -39,108 +39,62 @@ class Game extends Component {
       this.setState({
         notification: ALREADY_TAKEN
       })
+      return false
     }
     let updatedGrid
     let stillFloating
-    switch (val) {
-      case -1:
-        updatedGrid = updateGameGrid(currentGrid, x, y, MISS)
+    if (val < 0) {
+      updatedGrid = updateGameGrid(currentGrid, x, y, MISS)
+      this.setState({
+        grids: [
+          ...grids.slice(0, playerUnderAttack),
+          updatedGrid,
+          ...grids.slice(playerUnderAttack + 1)
+        ],
+        notification: MISS,
+        currentPlayer: playerUnderAttack
+      })
+    } else {
+      updatedGrid = updateGameGrid(currentGrid, x, y, HIT)
+      stillFloating = checkRemaining(val, updatedGrid)
+      if (!stillFloating) {
+        if (remainingShips[playerUnderAttack] <= 1) {
+          this.setState({
+            grids: [
+              ...grids.slice(0, playerUnderAttack),
+              updatedGrid,
+              grids.slice(playerUnderAttack + 1)
+            ],
+            notification: `${GAME_OVER}! Player ${currentPlayer + 1} wins!`,
+            gameOver: true
+          })
+        } else {
+          this.setState({
+            remainingShips: [
+              ...remainingShips.slice(0, playerUnderAttack),
+              1,
+              ...remainingShips.slice(playerUnderAttack + 1)
+            ],
+            notification: `PLAYER ${playerUnderAttack + 1} ${SHIP_NAMES[val]} SUNK`,
+            grids: [
+              ...grids.slice(0, playerUnderAttack),
+              updatedGrid,
+              ...grids.slice(playerUnderAttack + 1)
+            ],
+            currentPlayer: playerUnderAttack
+          })
+        }
+      } else {
         this.setState({
+          notification: HIT,
           grids: [
             ...grids.slice(0, playerUnderAttack),
             updatedGrid,
             ...grids.slice(playerUnderAttack + 1)
           ],
-          notification: MISS,
           currentPlayer: playerUnderAttack
         })
-        break
-      case PATROL_BOAT:
-        updatedGrid = updateGameGrid(currentGrid, x, y, HIT)
-        stillFloating = checkRemaining(PATROL_BOAT, updatedGrid)
-        if (!stillFloating) {
-          if (remainingShips[playerUnderAttack] <= 1) {
-            this.setState({
-              grids: [
-                ...grids.slice(0, playerUnderAttack),
-                updatedGrid,
-                ...grids.slice(playerUnderAttack + 1)
-              ],
-              notification: `${GAME_OVER}! Player ${currentPlayer + 1} wins!`,
-              gameOver: true
-            })
-          } else {
-            this.setState({
-              remainingShips: [
-                ...remainingShips.slice(0, playerUnderAttack),
-                1,
-                ...remainingShips.slice(playerUnderAttack + 1)
-              ],
-              notification: `PLAYER ${playerUnderAttack + 1} PATROL BOAT SUNK`,
-              grids: [
-                ...grids.slice(0, playerUnderAttack),
-                updatedGrid,
-                ...grids.slice(playerUnderAttack + 1)
-              ],
-              currentPlayer: playerUnderAttack
-            })
-          }
-        } else {
-          this.setState({
-            notification: HIT,
-            grids: [
-              ...grids.slice(0, playerUnderAttack),
-              updatedGrid,
-              ...grids.slice(playerUnderAttack + 1)
-            ],
-            currentPlayer: playerUnderAttack
-          })
-        }
-        break
-      case SUBMARINE:
-        updatedGrid = updateGameGrid(currentGrid, x, y, HIT)
-        stillFloating = checkRemaining(SUBMARINE, updatedGrid)
-        if (!stillFloating) {
-          if (remainingShips[playerUnderAttack] <= 1) {
-            this.setState({
-              grids: [
-                ...grids.slice(0, playerUnderAttack),
-                updatedGrid,
-                ...grids.slice(playerUnderAttack + 1)
-              ],
-              notification: `${GAME_OVER}! Player ${currentPlayer + 1} wins!`,
-              gameOver: true
-            })
-          } else {
-            this.setState({
-              remainingShips: [
-                ...remainingShips.slice(0, playerUnderAttack),
-                1,
-                ...remainingShips.slice(playerUnderAttack + 1)
-              ],
-              notification: `PLAYER ${playerUnderAttack + 1} SUBMARINE SUNK`,
-              grids: [
-                ...grids.slice(0, playerUnderAttack),
-                updatedGrid,
-                ...grids.slice(playerUnderAttack + 1)
-              ],
-              currentPlayer: playerUnderAttack
-            })
-          }
-        } else {
-          this.setState({
-            notification: HIT,
-            grids: [
-              ...grids.slice(0, playerUnderAttack),
-              updatedGrid,
-              ...grids.slice(playerUnderAttack + 1)
-            ],
-            currentPlayer: playerUnderAttack
-          })
-        }
-        break
-      default:
-        return false
+      }
     }
   }
 
@@ -187,8 +141,7 @@ class Game extends Component {
 const {
   PLAYER_ONE,
   PLAYER_TWO,
-  PATROL_BOAT,
-  SUBMARINE,
+  SHIP_NAMES,
   ATTACK,
   HIT,
   MISS,
