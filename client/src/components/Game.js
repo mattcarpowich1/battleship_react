@@ -63,7 +63,7 @@ class Game extends Component {
             grids: [
               ...grids.slice(0, playerUnderAttack),
               updatedGrid,
-              grids.slice(playerUnderAttack + 1)
+              ...grids.slice(playerUnderAttack + 1)
             ],
             notification: `${GAME_OVER}! Player ${currentPlayer + 1} wins!`,
             gameOver: true
