@@ -12,7 +12,7 @@ app.use(function(req, res, next) {
 });
 
 app.use('*', function(req, res) {
-  res.sendFile('./index.html');
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
 });
 
 app.listen(PORT);
